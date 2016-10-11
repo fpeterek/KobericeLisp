@@ -93,6 +93,10 @@ void KobericeLisp::tokenize(const std::string & filename) {
 
 void KobericeLisp::checkBeginning() {
     
+    /* At least three tokens are needed for a function call to (Kobeřice) */
+    
+    if (_tokens.size() < 3) { throw missing_function_call("beginning"); }
+    
     std::string tok = _tokens[1].value;
     std::transform(tok.begin(), tok.end(), tok.begin(), ::tolower); /* Doesn't convert Ř to ř */
     
@@ -132,21 +136,26 @@ void KobericeLisp::checkEnd() {
 void KobericeLisp::traverse() {
     
     bool isFunCall = false;
+    bool isDefun = false; /* Check for function definitions, if defun is found, this var is set to true and function name is checked */
     
     checkBeginning();
     checkEnd();
     
     for (auto & i : _tokens) {
         
-        if (i.type == tokType::openingPar) isFunCall = true;
         
-        if (isFunCall and i.value == "terpri") {
-            
-            throw terpri_function_call();
-            
-        }
+        std::transform(i.value.begin(), i.value.end(), i.value.begin(), ::tolower); /* Doesn't convert Ř to ř, GG */
         
-        if (isFunCall and i.value == "opli-mas-oplatek") i.value = "terpri";
+        if (i.type == tokType::openingPar) { isFunCall = true; }
+        
+        if (isDefun and (i.value == "kobeřice" or i.value == "kobeŘice") ) { throw unexpected_function_def("Kobeřice"); }
+        else if (isDefun and i.value == "terpri") { throw unexpected_function_def("terpri"); }
+        else { isDefun = false; }
+        
+        if (isFunCall and i.value == "terpri") { throw terpri_function_call(); }
+        else if (isFunCall and i.value == "defun") { isDefun = true; }
+        else if (isFunCall and i.value == "opli-mas-oplatek") i.value = "terpri";
+        
         
     }
     

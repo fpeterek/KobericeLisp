@@ -53,3 +53,22 @@ const char * file_not_opened::what() {
     return str.c_str();
     
 }
+
+unexpected_function_def::unexpected_function_def(const char * funName) {
+    
+    _functionName = funName;
+    
+}
+
+unexpected_function_def::unexpected_function_def(std::string & funName) {
+    
+    _functionName = funName;
+    
+}
+
+const char * unexpected_function_def::what() {
+    
+    std::string s = "Definition of function (" + _functionName + ") is not allowed. ";
+    return s.c_str();
+    
+}

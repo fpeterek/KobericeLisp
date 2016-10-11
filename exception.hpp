@@ -46,4 +46,17 @@ public:
     
 };
 
+class unexpected_function_def : public std::exception {
+    
+    std::string _functionName;
+    
+public:
+    
+    unexpected_function_def(const char * funName);
+    unexpected_function_def(std::string & funName);
+    
+    const char * what();
+    
+};
+
 #endif /* exception_hpp */

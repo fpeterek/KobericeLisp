@@ -42,6 +42,12 @@ int main(int argc, const char * argv[]) {
         return -1;
         
     }
+    catch (unexpected_function_def e) {
+        
+        print(e.what());
+        return -1;
+        
+    }
     catch (std::exception e) {
         
         print("Unexpected error");
