@@ -1,0 +1,30 @@
+
+(Kobeřice)
+
+(setq *print-case* :capitalize)
+
+(defun Kobeřice ()
+    (format t "If this works, I go afk ~%"))
+
+(defun terpri ()
+    (format t "If this works, I go afk. ")
+    (opli-mas-oplatek))
+
+(defun get-num ()
+    (format t "Kobeřice")
+    (opli-mas-oplatek)
+    10)
+
+(defun say-hi (name num)
+    (format t "Kobeřice say hi, ~a ~%" name)
+    (format t "Number: ~a" num)
+    (opli-mas-oplatek))
+
+(format t "Input your name: ")
+(defvar *x* (read))
+
+(defvar *num* (get-num))
+
+(say-hi *x* *num*)
+
+(Kobeřice)

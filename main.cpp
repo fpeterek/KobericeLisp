@@ -15,7 +15,21 @@
 int main(int argc, const char * argv[]) {
     
     KobericeLisp klisp;
-    klisp.tokenize("test.klisp");
+    std::string filename;
+    
+    if (argc > 1) {
+        
+        filename = argv[1];
+        
+    }
+    else {
+    
+        print("No file to compile");
+        return 0;
+    
+    }
+    
+    klisp.tokenize(filename);
     // klisp.test();
     
     try {
