@@ -1,19 +1,29 @@
+;;;; Example of a klisp program
+
+;;; Don't forget to call (Kobeřice) at the beggining of file
 
 (Kobeřice)
 
 (setq *print-case* :capitalize)
 
-(defun Kobeřice ()
-    (format t "If this works, I go afk ~%"))
+;;; Doesn't work
 
-(defun terpri ()
-    (format t "If this works, I go afk. ")
-    (opli-mas-oplatek))
+;; (defun Kobeřice ()
+;;     (format t "If this works, I go afk ~%"))
+
+;;; Doesn't work either
+
+;; (defun terpri ()
+;;     (format t "If this works, I go afk. ")
+;;     (opli-mas-oplatek))
 
 (defun get-num ()
     (format t "Kobeřice")
+    ;; Remember, can not use (terpri) in klisp
     (opli-mas-oplatek)
     10)
+
+;;; As you can see, this is literally Common Lisp
 
 (defun say-hi (name num)
     (format t "Kobeřice say hi, ~a ~%" name)
@@ -26,5 +36,7 @@
 (defvar *num* (get-num))
 
 (say-hi *x* *num*)
+
+;;; Don't forget to call (Kobeřice) at the end of file
 
 (Kobeřice)

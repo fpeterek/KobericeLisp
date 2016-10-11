@@ -185,24 +185,28 @@ void KobericeLisp::convert() {
     ss << "    (format t \"-                       Opli, máš oplatek?                       -~%\")" << std::endl;
     ss << "    (format t \"-                                                                -~%\")" << std::endl;
     ss << "    (format t \"------------------------------------------------------------------~%\")" << std::endl;
-    ss << "    (terpri)" << std::endl;
-    ss << ")" << std::endl;
+    ss << "    (terpri))\n" << std::endl;
     
     int c = 0;
     
     for (auto & i : _tokens) {
         
-        ss << i.value << " ";
-        
-        if (i.value == "(") ++c;
-        if (i.value == ")") --c;
+        if (i.value == "(") {
+            
+            std::endl(ss); /* Insert newline in front of ( */
+            for (int iter = c; iter > 0; --iter) { ss << "    "; }
+            ss << "( ";
+            ++c;
+            
+        }
+        else if (i.value == ")") { --c; ss << ") ";}
+        else { ss << i.value << " "; }
         
         if (not c) { std::endl(ss); }
         
     }
     
     output << ss.str();
-    
     
 }
 

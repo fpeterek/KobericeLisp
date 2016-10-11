@@ -11,6 +11,18 @@
 #include "parser.hpp"
 #include "print.hpp"
 
+bool isKLisp(std::string & filename) {
+    
+    if (filename.rfind(".klisp") == filename.length() - 6) {
+        
+        return true;
+        
+    }
+    
+    return false;
+    
+}
+
 
 int main(int argc, const char * argv[]) {
     
@@ -26,6 +38,13 @@ int main(int argc, const char * argv[]) {
     
         print("No file to compile");
         return 0;
+    
+    }
+    
+    if (not isKLisp(filename)) {
+        
+        print("File is not a KobeřiceLisp file. (Extension .klisp)");
+        return -1;
     
     }
     
