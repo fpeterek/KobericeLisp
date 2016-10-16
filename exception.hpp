@@ -59,4 +59,16 @@ public:
     
 };
 
+class missing_token : public std::exception {
+    
+    char _token;
+    
+public:
+    
+    const char * what();
+    
+    missing_token(char tok);
+    
+};
+
 #endif /* exception_hpp */

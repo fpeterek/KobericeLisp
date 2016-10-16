@@ -8,6 +8,17 @@
 
 #include "parser.hpp"
 
+const std::unordered_map<char, std::string> KobericeLisp::escape = {
+    { 'n'  , "\n"  },
+    { 't'  , "\t"  },
+    { '\\' , "\\"  },
+    { '"'  , "\""  },
+    { '\'' , "'"   },
+    { 'r'  , "\r"  },
+    { 'v'  , "\v"  },
+    { 'b'  , "\b"  }
+};
+
 bool KobericeLisp::isWhiteSpace(char param) {
     
     return isspace(param);
@@ -31,6 +42,8 @@ void KobericeLisp::tokenize(const std::string & filename) {
     size_t lineLen;
     
     while (std::getline(input, line)) {
+        
+        print(line);
         
         lineLen = line.length();
         
@@ -66,6 +79,48 @@ void KobericeLisp::tokenize(const std::string & filename) {
                 
             } /* parenthesis */
             
+            /* Check for string literal. String literals keep whitespaces. Copied from different project, not everything might make */
+            /* sense, but whatever, so long as it works. Might rewrite in the future.                                               */
+            
+            else if ( line[i] == '"' ) {
+                
+                std::string str;
+                
+                ++i;
+                
+                while ( line[i] != '"' ) {
+                    
+                    if ( line[i] == '\\' and i > lineLen - 2) {
+                        
+                        try {
+                            
+                            str += KobericeLisp::escape.at( line[i + 1] );
+                            
+                        } catch (std::out_of_range) {
+                            
+                            str += ( "\\" + std::string(1, line[i]) );
+                            
+                        }
+                        
+                        i += 2;
+                        
+                    }
+                    else {
+                        
+                        str += std::string(1, line[i]); /* std::string constructor(repeat: int, character: char) */
+                        ++i;
+                        
+                    }
+                    
+                    if (i >= lineLen) { throw missing_token('"'); }
+                    
+                }
+                
+                ++i; /* " character */
+                _tokens.emplace_back(tokType::strLit, str);
+                
+            } /* str literal */
+            
             /* Check for an identifier */
             
             else {
@@ -73,7 +128,9 @@ void KobericeLisp::tokenize(const std::string & filename) {
                 std::string str(1, line[i]); /* std::string constructor(repeat: int, character: char) */
                 ++i;
                 
-                while ( not KobericeLisp::isWhiteSpace(line[i]) and line[i] != ')' ) {
+                while ( not KobericeLisp::isWhiteSpace(line[i])
+                        and ( line[i] != ')' and line[i] != '(' and line[i] != '"')
+                        and i < lineLen ) {
                     
                     str += std::string(1, line[i]); /* std::string constructor(repeat: int, character: char) */
                     ++i;
@@ -115,6 +172,10 @@ void KobericeLisp::checkBeginning() {
 
 void KobericeLisp::checkEnd() {
     
+    /* At least six tokens are needed for two function calls to (Kobeřice) */
+    
+    if (_tokens.size() < 6) { throw missing_function_call("end"); }
+    
     size_t lastTok = _tokens.size() - 1;
     
     std::string tok = _tokens[lastTok - 1].value;
@@ -154,7 +215,7 @@ void KobericeLisp::traverse() {
         
         if (isFunCall and i.value == "terpri") { throw terpri_function_call(); }
         else if (isFunCall and i.value == "defun") { isDefun = true; }
-        else if (isFunCall and i.value == "opli-mas-oplatek") i.value = "terpri";
+        // else if (isFunCall and i.value == "opli-mas-oplatek") i.value = "terpri";
         
         
     }
@@ -178,14 +239,17 @@ void KobericeLisp::convert() {
     
     if (not output) { throw file_not_opened(file); }
     
-    ss << "(defun Kobeřice ()" << std::endl;
-    ss << "    (terpri)" << std::endl;
-    ss << "    (format t \"------------------------------------------------------------------~%\")" << std::endl;
-    ss << "    (format t \"-                                                                -~%\")" << std::endl;
-    ss << "    (format t \"-                       Opli, máš oplatek?                       -~%\")" << std::endl;
-    ss << "    (format t \"-                                                                -~%\")" << std::endl;
-    ss << "    (format t \"------------------------------------------------------------------~%\")" << std::endl;
-    ss << "    (terpri))\n" << std::endl;
+    print(ss, "(defun Kobeřice ()"                                                                          );
+    print(ss, "    (terpri)"                                                                                );
+    print(ss, "    (format t \"------------------------------------------------------------------~%\")"     );
+    print(ss, "    (format t \"-                                                                -~%\")"     );
+    print(ss, "    (format t \"-                       Opli, máš oplatek?                       -~%\")"     );
+    print(ss, "    (format t \"-                                                                -~%\")"     );
+    print(ss, "    (format t \"------------------------------------------------------------------~%\")"     );
+    print(ss, "    (terpri))\n"                                                                             );
+    
+    print(ss, "(defun opli-mas-oplatek ( &optional (stream *standard-output*) )"                            );
+    print(ss, "    (terpri stream))"                                                                        );
     
     int c = 0;
     
@@ -200,6 +264,7 @@ void KobericeLisp::convert() {
             
         }
         else if (i.value == ")") { --c; ss << ") ";}
+        else if (i.type == tokType::strLit) { ss << "\"" << i.value << "\""; }
         else { ss << i.value << " "; }
         
         if (not c) { std::endl(ss); }

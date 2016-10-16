@@ -16,6 +16,7 @@
 #include <cctype>
 #include <sstream>
 #include <algorithm>
+#include <unordered_map>
 
 #include "token.hpp"
 #include "print.hpp"
@@ -24,6 +25,7 @@
 
 class KobericeLisp {
     
+    static const std::unordered_map<char, std::string> escape;  //  " \n \t \\ \" \' \r \v \b ";
     static bool isWhiteSpace(char param);
     
     /* Non-static members */

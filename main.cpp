@@ -11,6 +11,8 @@
 #include "parser.hpp"
 #include "print.hpp"
 
+#define __DEBUG
+
 bool isKLisp(std::string & filename) {
     
     if (filename.rfind(".klisp") == filename.length() - 6) {
@@ -28,6 +30,10 @@ int main(int argc, const char * argv[]) {
     
     KobericeLisp klisp;
     std::string filename;
+    
+    print(isspace('\n'));
+    
+#ifndef __DEBUG
     
     if (argc > 1) {
         
@@ -48,8 +54,16 @@ int main(int argc, const char * argv[]) {
     
     }
     
+#else
+    filename = "test.klisp";
+#endif
+    
     klisp.tokenize(filename);
-    // klisp.test();
+    
+#ifdef __DEBUG
+    print("\nTokens: \n");
+    klisp.test();
+#endif
     
     try {
         

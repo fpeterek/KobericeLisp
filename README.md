@@ -19,4 +19,6 @@ Don't define functions (terpri) and (Kobeřice), the compiler won't let you do i
 
 ---
 
-Currently doesn't support programs that use import functions ( (load), (compile-file), (require) ).
+Use ( (load), (compile-file), (require) ) to import Common Lisp files.
+
+There is no KobeřiceLisp way to import KobeřiceLisp files, but the Common Lisp functions might work. 

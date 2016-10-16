@@ -17,6 +17,7 @@ enum class tokType {
     
     openingPar,     //  Opening parenthesis '('
     closingPar,     //  Closing parenthesis ')'
+    strLit,         //  String literal, eg. "Kobeřice"
     anythingElse,   //  Anything else
     none
     

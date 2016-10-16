@@ -16,4 +16,9 @@ void print(T param) {
     std::cout << param << std::endl;
 }
 
+template <class T>
+void print(std::ostream & os, T param) {
+    os << param << std::endl;
+}
+
 #endif /* print_h */

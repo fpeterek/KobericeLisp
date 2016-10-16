@@ -72,3 +72,18 @@ const char * unexpected_function_def::what() {
     return s.c_str();
     
 }
+
+missing_token::missing_token(char tok) {
+    
+    _token = tok;
+    
+}
+
+const char * missing_token::what() {
+    
+    std::string message = "Missing token ";
+    message += std::to_string(_token);
+    
+    return message.c_str();
+    
+}
