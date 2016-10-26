@@ -11,7 +11,7 @@
 #include "parser.hpp"
 #include "print.hpp"
 
-#define __DEBUG
+// #define __DEBUG
 
 bool isKLisp(std::string & filename) {
     
@@ -30,8 +30,6 @@ int main(int argc, const char * argv[]) {
     
     KobericeLisp klisp;
     std::string filename;
-    
-    print(isspace('\n'));
     
 #ifndef __DEBUG
     

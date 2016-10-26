@@ -204,7 +204,6 @@ void KobericeLisp::traverse() {
     
     for (auto & i : _tokens) {
         
-        
         std::transform(i.value.begin(), i.value.end(), i.value.begin(), ::tolower); /* Doesn't convert Ř to ř, GG */
         
         if (i.type == tokType::openingPar) { isFunCall = true; }
@@ -215,8 +214,6 @@ void KobericeLisp::traverse() {
         
         if (isFunCall and i.value == "terpri") { throw terpri_function_call(); }
         else if (isFunCall and i.value == "defun") { isDefun = true; }
-        // else if (isFunCall and i.value == "opli-mas-oplatek") i.value = "terpri";
-        
         
     }
     
