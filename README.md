@@ -8,8 +8,8 @@
 
 KobeřiceLisp is literally Common Lisp compiled to Common Lisp... Well, with a few differences. 
 
-- Programs written in KobericeLisp have to start and end with a call to function (Kobeřice).
-- Instead of using (terpri), you use (opli-mas-oplatek) in KobeřiceLisp.
+* Programs written in KobericeLisp have to start and end with a call to function (Kobeřice).
+* Instead of using (terpri), you use (opli-mas-oplatek) in KobeřiceLisp.
 
 KobeřiceLisp uses .klisp file extension.
 
